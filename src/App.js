@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { isAuthenticated } from './utils/auth';
+import Login from './components/Login';
+import Private from './components/Private';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Route path="/" exact>
+        <h1>Public Route</h1>
+      </Route>
+      <Route path="/login">
+        {isAuthenticated() ? <Redirect to="/private" /> : <Login />}
+      </Route>
+      <Route path="/private">
+        {isAuthenticated() ? <Private /> : <Redirect to="/login" />}
+      </Route>
+    </Router>
   );
 }
 
